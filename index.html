@@ -2,59 +2,91 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Photo Motion Viewer</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Photo Motion Reveal</title>
   <style>
-    .motion-image {
-      position: absolute;
-      bottom: -100%;
-      right: -100%;
-      width: 100%;
-      height: auto;
-      animation: moveDiagonally 5s linear forwards;
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    @keyframes moveDiagonally {
-      0% {
+    input[type="file"] {
+      margin-top: 20px;
+      padding: 10px;
+      background: #222;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .image-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .motion-img {
+      position: absolute;
+      width: 100%;
+      height: auto;
+      bottom: -100%;
+      right: -100%;
+      animation: moveDiagonal 6s ease-out forwards;
+    }
+
+    @keyframes moveDiagonal {
+      from {
         bottom: -100%;
         right: -100%;
+        opacity: 0;
       }
-      100% {
+      to {
         bottom: 0;
         right: 0;
+        opacity: 1;
       }
     }
   </style>
 </head>
-<body class="bg-black min-h-screen flex flex-col items-center justify-center text-white relative overflow-hidden">
+<body>
 
-  <h1 class="text-3xl font-bold mb-6">Upload Your Photo for Motion Reveal</h1>
+  <h1>Upload a Photo for Motion Effect</h1>
+  <input type="file" accept="image/*" id="uploadBtn"/>
 
-  <input type="file" accept="image/*" id="imageInput" class="mb-6 bg-gray-800 p-2 rounded" />
-
-  <div id="imageContainer" class="w-full h-full absolute top-0 left-0 overflow-hidden">
-    <!-- Image will appear here -->
-  </div>
+  <div class="image-container" id="imageContainer"></div>
 
   <script>
-    const imageInput = document.getElementById('imageInput');
+    const uploadBtn = document.getElementById('uploadBtn');
     const imageContainer = document.getElementById('imageContainer');
 
-    imageInput.addEventListener('change', (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          imageContainer.innerHTML = ''; // Clear any existing image
-          const img = document.createElement('img');
-          img.src = e.target.result;
-          img.className = 'motion-image';
-          imageContainer.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-      }
+    uploadBtn.addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        imageContainer.innerHTML = ''; // Clear previous image
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.className = 'motion-img';
+        imageContainer.appendChild(img);
+      };
+      reader.readAsDataURL(file);
     });
   </script>
+
 </body>
 </html>
