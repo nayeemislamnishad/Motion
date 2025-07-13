@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo Motion Viewer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .motion-image {
+      position: absolute;
+      bottom: -100%;
+      right: -100%;
+      width: 100%;
+      height: auto;
+      animation: moveDiagonally 5s linear forwards;
+    }
+
+    @keyframes moveDiagonally {
+      0% {
+        bottom: -100%;
+        right: -100%;
+      }
+      100% {
+        bottom: 0;
+        right: 0;
+      }
+    }
+  </style>
+</head>
+<body class="bg-black min-h-screen flex flex-col items-center justify-center text-white relative overflow-hidden">
+
+  <h1 class="text-3xl font-bold mb-6">Upload Your Photo for Motion Reveal</h1>
+
+  <input type="file" accept="image/*" id="imageInput" class="mb-6 bg-gray-800 p-2 rounded" />
+
+  <div id="imageContainer" class="w-full h-full absolute top-0 left-0 overflow-hidden">
+    <!-- Image will appear here -->
+  </div>
+
+  <script>
+    const imageInput = document.getElementById('imageInput');
+    const imageContainer = document.getElementById('imageContainer');
+
+    imageInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          imageContainer.innerHTML = ''; // Clear any existing image
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.className = 'motion-image';
+          imageContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+</body>
+</html>
