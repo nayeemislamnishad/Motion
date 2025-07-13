@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Photo Scroll Animation</title>
+  <title>Diagonal Photo Animation</title>
   <style>
     body {
       margin: 0;
@@ -22,16 +22,19 @@
       position: absolute;
       width: 100%;
       height: auto;
-      animation: moveUp 30s linear infinite;
-      bottom: -100%; /* start from bottom out of view */
+      bottom: -100%;   /* Start out of view */
+      right: -100%;    /* Start out of view */
+      animation: diagonalMove 20s linear infinite;
     }
 
-    @keyframes moveUp {
+    @keyframes diagonalMove {
       0% {
         bottom: -100%;
+        right: -100%;
       }
       100% {
         bottom: 100%;
+        right: 100%;
       }
     }
   </style>
@@ -39,7 +42,7 @@
 <body>
 
   <div class="container">
-    <img src="f-intro.jpg" alt="Moving" class="moving-photo" />
+    <img src="n-intro.jpg" alt="Moving" class="moving-photo" />
   </div>
 
 </body>
